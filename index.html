@@ -48,7 +48,7 @@
                 "\n2) -1,-1 이 있는 지점의 ID 와 같지 않은 영역들의 크기의 합을 계산하면 답이된다.", 
                 "문제링크" : "https://atcoder.jp/contests/abc361/tasks/abc361_g", 
                 "코드링크" : "아직못품",
-                "대표이미지" : "NA"
+                "대표이미지" : "abc361_g.png"
             },
         ];
 
@@ -89,7 +89,12 @@
                         link.textContent = item[header];
                         link.target = '_blank';
                         td.appendChild(link);
-                    } else {
+                    } else if(header == "대표이미지") {
+                        const img = document.createElement('img');
+                        img.src = item[header];
+                        td.appendChild(img);
+                    }
+                    else {
                         td.innerHTML = nl2br(item[header].toString());
                     }
                     row.appendChild(td);
