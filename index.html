@@ -225,6 +225,38 @@
                 "문제링크" : "https://www.acmicpc.net/problem/16565", 
                 "코드링크" : "https://www.acmicpc.net/source/81943011"
             },
+            {
+                "분류" : "dijkstra DP",
+                "제목": "KCM Trable",
+                "문제": "Node 1 에서 N 까지 가는데 주어진 한계비용을 초과하지 않는 한도 내에서 가장 빨리 도착하는 방법을 찾기",
+                "해법": "비용 기준으로 2차원 Dijkstra DP 로 구현하는데 시간 초과를 해법하기 위해 몇가지 기술을 적용해야 한다." +
+                "\n DEST[k][cost] 값이 업데이트 되면 DEST[k][const + 1] ~ DEST[k][const + Limit] 까지의 값도 같이 업데이트해주어야 한다." +
+                "\n K 가 최종 도착지라면 loop 를 빠져나온다. 우선순위가 소요시간 기준이기 때문이다." +
+                "\n Edge 를 비용기준으로 정렬해 주어야 한다.",
+                "문제링크" : "https://www.acmicpc.net/problem/10217", 
+                "코드링크" : "https://www.acmicpc.net/source/81962027"
+            },
+            {
+                "분류" : "DP + Greedy",
+                "제목": "커플 만들기",
+                "문제": "남자 N명 여자 M 명을 최대한 매칭하였을때 성격차이가 최소화 되도록 매칭 하는 경우를 찾기",
+                "해법": "남자,여자를 각각 성격순으로 정렬한다." +
+                "\n DP[i][j] 는 i 번째 남자와 j 번째 여자를 매칭하였을 때 최소 성격차로 정의" +
+                "\n DP[i][j] = min(DP[i-1][0] .. DP[i-1][j-1]) + diff(N[i] , M[j]) 로 계산하면 된다.",
+                "문제링크" : "https://www.acmicpc.net/problem/1727", 
+                "코드링크" : "https://www.acmicpc.net/source/82069160"
+            },
+            {
+                "분류" : "누적합,비트마스크",
+                "제목": "XOR 합 3",
+                "문제": "수열의 모든 부분수열의 XOR 합을 구하기",
+                "해법": "S[i] 를 A[0] ... A[i] 까지의 XOR 이라고 정의하면 모든 S[i] 를 미리 계산해 놓는다." +
+                "\n 모든 I 를 순회하면서 각비트별로 1 인경우 홀수 Count 감소 후 홀수 짝수 swap" +
+                "\n 각 비트별로 0 인경우 짝수 count 를 감소시키면서 홀수 카운트 만큼 결과에 반복 더해준다.",
+                "문제링크" : "https://www.acmicpc.net/problem/13710", 
+                "코드링크" : "https://www.acmicpc.net/source/82075352",
+                "대표이미지" : "bj_13710.png",
+            },
         ];
 
         // 줄바꿈 문자를 <br> 태그로 변환하는 함수
