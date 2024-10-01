@@ -479,6 +479,48 @@
                 "\n 해당 쿼리는 DP[j][k] (j < i)를 스캔하여 YES 를 도출 할 수 있다.",
                 "문제링크" : "https://www.acmicpc.net/problem/31445", 
                 "코드링크" : "https://www.acmicpc.net/source/83946517"
+            },
+            {
+                "분류" : "LCA, Sparse Table",
+                "제목": "도로 네트워크",
+                "문제": "트리구조로 되어있는 도로망에서 Node A,B 간 거쳐가는 간선들의 min, max 를 빠르게 찾아야 하는 문제", 
+                "해법" : "Sparse Table 을 구성하여 LCA 를 빠르게 구할 수 있다. 모든 Node 별로 2^k 만큼 떨어진 부모위 위치를 캐싱하면 된다." +
+                "\n P[K][i] 는 K 번째 노드의 2^i 승 위치만큼 떨어진 부모노드를 가리킨다고 생각해보면 아래와 같이 구할 수 있다." +
+                "\n P[K][i] = P[P[K][i-1]][i-1]" +
+                "\n 즉 만약 i = 4 이라면 현재노드의 16번째 조상은, 8번째 조상의 8번째 조상이라는 원리이다.",
+                "문제링크" : "https://www.acmicpc.net/problem/3176", 
+                "코드링크" : "https://www.acmicpc.net/source/84107642",
+                "대표이미지" : "bj_3176.png"
+            },
+            {
+                "분류" : "stack",
+                "제목": "Buildings",
+                "문제": "N개의 빌딩이 있고 1~N 의 i 에 대해서 j i~j 사의 빌딩중 제일 큰 j 가 몇개나 있는지 각각 찾는 문제 ", 
+                "해법" : "이 문제를 다시 해석하면 i+1 번째의 높이에서 바라보았을때 보이는 빌딩이 총 몇개인지 찾아야 하는 문제이다." +
+                "\n 이 문제를 해결하기 위해서 모노토닉 스택이 필요하고 맨 뒤에서 부터 높이가 낮아지는 stack 을 구성해야 한다." +
+                "\n 뒤에서 부터 순회하면서 stack top 보다 현재 빌딩이 더 높으면 stack 을 pop 하며 monotonic 을 유지하며 stack 의 크기를 계산해서 출력하면된다.",
+                "문제링크" : "https://atcoder.jp/contests/abc372/tasks/abc372_d", 
+                "코드링크" : "https://atcoder.jp/contests/abc372/submissions/58061510",
+                "대표이미지" : "abc372_d.png"
+            },
+            {
+                "분류" : "union-find",
+                "제목": "K-th Largest Connected Components",
+                "문제": "N 까지의 정수 집합이 있고 두가지의 쿼리가 있는데 첮째는 union, 두번째는 union 에서 K 번재로 큰 값이 무엇인지 찾는문제이다", 
+                "해법" : "K 의 제약이 10이하인것이 힌트이다. union find 를 응용하여 N 개의 이차원 배열을 만들어 union 이 될때마다 각 2차원 배열을" +
+                "\n 합치고 정렬하면 된다. K 가 최대 10 이므로 정렬 이후 10개로 resize 하면 된다.",
+                "문제링크" : "https://atcoder.jp/contests/abc372/tasks/abc372_e", 
+                "코드링크" : "https://atcoder.jp/contests/abc372/submissions/58061510"
+            },
+            {
+                "분류" : "DFS",
+                "제목": "Hidden Weight",
+                "문제": "그래프가주어지고 Node 간 값의 차이가 Edge 로 주어진다. 이때 모든 Edge 를 만족하는 Node 값의 List 를 구하여야 한다.", 
+                "해법" : "단방향 그래프이지만 Weight 에 -1 을 곱하면 반대 방향의 Eedg 가 성립하기때문제 양뱡향으로 그래프를 구성한다." +
+                "\n 임의의 노드에서 출발하여 모든 Node 를 방분할 때 까지 DFS 로 순회하면서 Edge 의 값에 따라 Node 를 update 하면 된다." +
+                "\n Weight 가 모순되는 경우는 없기 때문이다.",
+                "문제링크" : "https://atcoder.jp/contests/abc373/tasks/abc373_d", 
+                "코드링크" : "https://atcoder.jp/contests/abc373/submissions/58320807"
             }
         ];
 
