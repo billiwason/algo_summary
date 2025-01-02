@@ -652,7 +652,62 @@
                 "\n 5) root node 에 A,B ground 의 최소값 만큼 차감한다." ,
                 "문제링크" : "https://atcoder.jp/contests/abc383/tasks/abc383_e", 
                 "코드링크" : "https://atcoder.jp/contests/abc383/submissions/60629616",
+            },
+            {
+                "분류" : "articulation point",
+                "제목": "단절점",
+                "문제": "그래프에서 단절점노드들을 찾아 출력하는 문제",
+                "해법" : "order[i] : DFS 중 i 번째 노드를 방분한 시점" +
+                "\n low : i 번째 노드 및 하위 노드들의 low 중 최소값." +
+                "\n degree : 방문하지 않은 자식노드들에 대한 순회" +
+                "\n DFS 를 돌면서 각 Node 별 order, low, degree 를 계산한다. 자식노드(연결 노드 중 order 가 더 큰 노드들) 의 low 값이 현재노드의 order 보다 더" +
+                "\n 크거나 같을 경우 현재 노드는 단절점이다. 현재노드를 방문하지 않고 갈 수없는 자식 노드가 있다는 뜻." ,
+                "문제링크" : "https://www.acmicpc.net/problem/11266", 
+                "코드링크" : "https://www.acmicpc.net/source/87410851",
+                "대표이미지" : "bj_11266.png"
+            },
+            {
+                "분류" : "SCC",
+                "제목": "Strongly Connected Component(강한 연결 요소)",
+                "문제": "그래프에서 강한 연결 요소 집합들을 찾는 문제. SCC 그룹의 ",
+                "해법" : "DFS 를 순회하면서 discover 와 low 를 업데이트한다.",
+                "문제링크" : "https://www.acmicpc.net/problem/2150", 
+                "코드링크" : "https://www.acmicpc.net/source/87008446"
+            },
+            {
+                "분류" : "articulation edge",
+                "제목": "단절선선",
+                "문제": "그래프에서 단절선을 찾아 출력하는 문제제",
+                "해법" : "discovery[i] : DFS 중 i 번째 노드를 방분한 시점" +
+                "\n low : i 번째 노드 및 하위 노드들의 low 중 최소값." +
+                "\n DFS 를 돌면서 각 Node 별 order, low 를 계산한다. 현재 노드 기점에서 아직 방문하지 않는 자식노드의 low 이 현재 노드의 discovery 보다 클경우" +
+                "\n 해당 간선은 단절선으로 계산할 수 있다.",
+                "문제링크" : "https://www.acmicpc.net/problem/11400", 
+                "코드링크" : "https://www.acmicpc.net/source/87490384"
+            },
+            {
+                "분류" : "오일러피 함수수",
+                "제목": "GCD(n, k) = 1",
+                "문제": "자연수 n이 주어졌을 때, GCD(n, k) = 1을 만족하는 자연수 1 ≤ k ≤ n 의 개수를 구하는 프로그램을 작성하시오.",
+                "해법" : "이문제는 오일러 피 함수로 정의할 수 있다." +
+                "\n n 의 모든 소인수를 찾아서 n * (1-1/p1)(1-1/p2) ... (1-1/pk) 를 구하면 된다." +
+                "\n 10^12 까지의 범위기 때문에 10^6 까지 소수 테이블을 만들어서 순서대로 나누어서 소인수를 찾으면 된다." +
+                "\n 해당 테이블의 모든 소수로 나누어 떨어지지 않으면 그 숫자 자체가 소수로 간주 할 수 있다.",
+                "문제링크" : "https://www.acmicpc.net/problem/11689", 
+                "코드링크" : "https://www.acmicpc.net/source/87587083"
+            },
+            {
+                "분류" : "우선순위 큐",
+                "제목": "철로",
+                "문제": "통근하는 사람들의 출근 위치들을 최대로 커버할 수 있는 철로의 위치를 찾는 문제(길이는 고정정)",
+                "해법" : "데이터를 종료 지점 기준으로 정렬렬" +
+                "\n 각 종료 지점들을 순회하면서 시작점-해당 종료지점의 차이가 길이보다 작거나 같은 것들의 갯수를 세면 된다.",
+                "문제링크" : "https://www.acmicpc.net/problem/13334", 
+                "코드링크" : "https://www.acmicpc.net/source/88085888",
+                "대표이미지" : "bj_13334.png"
             }
+            
+
         ];
 
         // 줄바꿈 문자를 <br> 태그로 변환하는 함수
