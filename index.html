@@ -705,9 +705,67 @@
                 "문제링크" : "https://www.acmicpc.net/problem/13334", 
                 "코드링크" : "https://www.acmicpc.net/source/88085888",
                 "대표이미지" : "bj_13334.png"
+            },
+            {
+                "분류" : "DP, 누적합",
+                "제목": "가로등 끄기기",
+                "문제": "일렬로 켜져있는 가로등의 시작 위치에서 마징가가 왼쪽 또는 오른쪽으로 움직이며 모든 전구를 끌때 최소의 소비전력 값을 찾는 문제",
+                "해법" : "DP[i][j][0] : i~j 까지 불을끄고 마지막 위치가 i 번째 있을때 까지 소모된 전력, " +
+                "\n DP[i][j][1] : i~j 까지 불을끄고 마지막 위치가 j 번째 있을때 까지 소모된 전력, " +
+                "\n DP[i][j][1] : DP[i][j] 를 기반으로 DP[i-1][j] 또는 DP[i][j+1] 의 값을 업데이트 해 주면 된다 ",
+                "문제링크" : "https://www.acmicpc.net/problem/2315", 
+                "코드링크" : "https://www.acmicpc.net/source/89160331",
+                "대표이미지" : "bj_2315.png",
+                "기타" : "2/19 스터디 문제"
+            },
+            {
+                "분류" : "DFS, DP",
+                "제목": "D - Stone XOR",
+                "문제": "N개 의 가방에 각 Ai 개의 돌이 있는데 0 번 또는 임의의 회수로 서로 두개의 가방의 돌을 하나로 합치는 작업을 한다." +
+                "\n 이때 각가방의 돌의 개수들을 xor 했을때 모든 가능한 경우의 수를 찾는 문제" ,
+                "해법" : "이러한 경우의 수를 Bell Number 라고 한다(주어진 크기의 집합을 분할하는 방법의 수)" +
+                "\n i-1 번째 돌들이 k 개의 그룹으로 나누어져 있다면 i 번재 돌을 각 그룹에 포함되거나 새로운 그룹에 포함되는 경우를 가지고 DFS 로 계산할 수 있다.",
+                "문제링크" : "https://atcoder.jp/contests/abc390/tasks/abc390_d", 
+                "코드링크" : "https://atcoder.jp/contests/abc390/submissions/62199934",
+                "대표이미지" : "abc_390_d.png",
+                "기타" : "2/19 스터디 문제"
+            },
+            {
+                "분류" : "TBD",
+                "제목": "Minimum Cost Good Caption",
+                "문제": "TBD" ,
+                "해법" : "TBD",
+                "문제링크" : "https://leetcode.com/problems/minimum-cost-good-caption/description/", 
+                "코드링크" : "",
+                "기타" : "2/19 스터디 문제"
+            },
+            {
+                "분류" : "TBD",
+                "제목": "Longest Special Path",
+                "문제": "TBD" ,
+                "해법" : "TBD",
+                "문제링크" : "https://leetcode.com/problems/longest-special-path/description/", 
+                "코드링크" : "",
+                "기타" : "2/19 스터디 문제"
+            },
+            {
+                "분류" : "TBD",
+                "제목": "가장 큰 직사각형",
+                "문제": "TBD" ,
+                "해법" : "TBD",
+                "문제링크" : "https://www.acmicpc.net/problem/3321", 
+                "코드링크" : "",
+                "기타" : "2/19 스터디 문제"
+            },
+            {
+                "분류" : "TBD",
+                "제목": "간선을 하나 그어서 루트까지 거리의 합을 최소로 만들기로 했습니다",
+                "문제": "TBD" ,
+                "해법" : "TBD",
+                "문제링크" : "https://www.acmicpc.net/problem/32874", 
+                "코드링크" : "",
+                "기타" : "2/19 스터디 문제"
             }
-            
-
         ];
 
         // 줄바꿈 문자를 <br> 태그로 변환하는 함수
