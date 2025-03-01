@@ -765,6 +765,65 @@
                 "문제링크" : "https://www.acmicpc.net/problem/32874", 
                 "코드링크" : "",
                 "기타" : "2/19 스터디 문제"
+            },
+            {
+                "분류" : "DFS DP",
+                "제목": "Length of Longest V-Shaped Diagonal Segment",
+                "문제": "2차원 배열에서 값이 0,1,2  로 정의되어있고 이동가능한 코스는 1에서 출발하여 2->0->2->0 순으로 이동" +
+                "\n 해야함. 그런데 이동방향은 대각선 방향이고 단 한번만 90도로 꺾을 수 있다. 이러한 조건하에서 가장 길게 이동할 수 " +
+                "\n 있는 경우의 길이를 찾는 문제",
+                "해법" : "4 차원 DP table 을 만들고 DFS DP순회, DP[r][c][direc][cw], 현재 지점이 r,c 이고 방향이(총4가지) direc 이고" +
+                "\ncw 가 90도 꺾은 여부를 나타냄.",
+                "문제링크" : "https://leetcode.com/problems/length-of-longest-v-shaped-diagonal-segment/description/", 
+                "코드링크" : "https://leetcode.com/problems/length-of-longest-v-shaped-diagonal-segment/submissions/1558823505/",
+                "기타" : "3/4 스터디 문제"
+            },
+            {
+                "분류" : "우선순위큐큐",
+                "제목": "K-th Largest Triplet",
+                "문제": "3개의 배열이 있고 각배열에서 고른 숫자가 A,B,C 일때 가능한 모든 A*B + B*C + C*A 중 K 번째를 찾는 문제제" ,
+                "해법" : "각각의 배열을 작은 순으로 정렬하고 가장 작은 ABC 값을 큐에 넣는다" +
+                "\n 큐에서 하나를 꺼내 카운트를 하고 꺼넨 ABC 의 index 가 i,j,k 라면 i+1,j,k , i,j+1,k, j,j,k+1 을 큐에 넣는 작업을 반복한다." +
+                "\n 단 큐에 넣을때 i,j,k 가 중복으로 들어갈 수 있으므로 set 을 이용하여 그전에 넣지 않았던 것들만 넣는다",
+                "문제링크" : "https://atcoder.jp/contests/abc391/tasks/abc391_f", 
+                "코드링크" : "",
+                "기타" : "3/4 스터디 문제"
+            },
+            {
+                "분류" : "TBD",
+                "제목": "Prefix LIS Query",
+                "문제": "TBD" ,
+                "해법" : "TBD",
+                "문제링크" : "https://atcoder.jp/contests/abc393/tasks/abc393_f", 
+                "코드링크" : "",
+                "기타" : "3/4 스터디 문제"
+            },
+            {
+                "분류" : "TBD",
+                "제목": "Hierarchical Majority Vote",
+                "문제": "TBD" ,
+                "해법" : "TBD",
+                "문제링크" : "https://atcoder.jp/contests/abc391/tasks/abc391_e", 
+                "코드링크" : "",
+                "기타" : "3/4 스터디 문제"
+            },
+            {
+                "분류" : "TBD",
+                "제목": "Vitamin Balance",
+                "문제": "TBD" ,
+                "해법" : "TBD",
+                "문제링크" : "https://atcoder.jp/contests/abc390/tasks/abc390_e", 
+                "코드링크" : "",
+                "기타" : "3/4 스터디 문제"
+            },
+            {
+                "분류" : "TBD",
+                "제목": "Palindromic Shortest Path",
+                "문제": "TBD" ,
+                "해법" : "TBD",
+                "문제링크" : "https://atcoder.jp/contests/abc394/tasks/abc394_e", 
+                "코드링크" : "",
+                "기타" : "3/4 스터디 문제"
             }
         ];
 
