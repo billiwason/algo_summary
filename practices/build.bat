@@ -1,1 +1,1 @@
-g++ -g -Wall -o out 20250525.cpp
+g++ -g -Wall -o out bj_3665.cpp

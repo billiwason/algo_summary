@@ -58,6 +58,36 @@ typedef vector<dv> dv2;
  
 #define BIT_SET(X, I) (X) |= (1<<(I))
 #define BIT_CLEAR(X, I) (X) &= ~(1<<(I))
+
+#define FOR(X, Y) for(int X = 0 ; X < (Y) ; X++)
+#define FOR2(X, Y, Z) for(int X = (Y); X < (Z) ; X++)
+
+
+vector<ll> getPrimeNumber(ll limit)
+{
+	vector<ll> numList(limit + 1, 1);
+	numList[0] = 0;
+	numList[1] = 0;
+ 
+	for (int i = 2; i < limit + 1; i++)
+	{
+		if (numList[i])
+		{
+			for (ll m = 2; i * m < limit + 1; m++)
+			{
+				numList[i * m] = 0;
+			}
+		}
+	}
+	vector<ll> result;
+	FOR(i, (int)numList.size())
+	{
+		if (numList[i]) {
+			result.push_back(i);
+		}
+	}
+	return result;
+}
  
  
 // 우선 순위를 설정할 수있는 priority queue
@@ -80,11 +110,99 @@ typedef vector<dv> dv2;
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-int main()
+
+// union find
+// 유니온 파인드 클래스
+// UnionFind uf(N+1) 로 생성해야 한다.
+class UnionFind
 {
+	iv m_parent;
+	iv m_rank;
+    iv m_size;
+ 
+public:
+	UnionFind(int nrItem)
+	{
+		m_parent.resize(nrItem, 0);
+		m_rank.resize(nrItem, 1);
+        m_size.resize(nrItem, 1);
+ 
+		for (int i = 0; i < nrItem; i++)
+			m_parent[i] = i;
+	}
+	int find(int x) {
+		if (x == m_parent[x])
+			return x;
+		else
+			return m_parent[x] = find(m_parent[x]);
+	}
+	void uni(int x, int y) {
+		//printf("UNI : %d %d \n", x, y);
+
+		x = find(x);
+		y = find(y);
+		if (x == y)
+			return;
+
+        int szX = m_size[x];
+        int szY = m_size[y];
+		if (m_rank[x] < m_rank[y])
+			swap(x, y);
+		m_parent[y] = x;
+ 
+		if (m_rank[x] == m_rank[y]) {
+			m_rank[x] = m_rank[y] + 1;
+		}
+        m_size[x] = m_size[y] = szX + szY;
+	}
+    void uni_userdefine(int x, int y)
+    {
+        x = find(x);
+		y = find(y);
+		if (x == y)
+			return;
+        m_parent[x] = y;
+    }
+    int getSize(int i)
+    {
+        return m_size[find(i)];
+    }
+};
+ 
+
+int main() {
+
 	ios_base::sync_with_stdio(false);
 	cin.tie(NULL);
 	cout.tie(NULL);
 
+	int N , Q;
+	cin >> N >> Q;
+
+	UnionFind UF(N+1);
+
+	FOR(i, Q)
+	{
+		int op;
+		cin >> op;
+		int a, b;
+		cin >> a >> b;
+		if(op == 0)
+		{
+			UF.uni(a,b);
+		}
+		else
+		{
+			if(UF.find(a) == UF.find(b))
+			{
+				cout << "YES" << endl;
+			}
+			else
+			{
+				cout << "NO" << endl;
+			}
+		}
+	}
+    
     return 0;
 }
