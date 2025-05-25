@@ -1,0 +1,1 @@
+g++ -g -Wall -o out 20250525.cpp
