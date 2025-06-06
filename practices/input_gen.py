@@ -1,8 +1,11 @@
 import random
-
+from random import shuffle
 
 def write1(f, a):
     f.write(str(a) + str("\n"))
+
+def write1_no_lf(f, a):
+    f.write(str(a))
 
 def write2(f, a, b):
     f.write(str(a) + str(" ") + str(b) + str("\n"))
@@ -155,3 +158,31 @@ with open("input.txt", "w") as file:
     write1(file, a)
     
 """
+
+len = 200
+str1 = []
+str2 = []
+
+for i in range(len):
+    str1.append('R')
+    str2.append('R')
+
+for i in range(len):
+    str1.append('U')
+    str2.append('U')
+
+shuffle(str1)
+shuffle(str2)
+
+
+
+with open("input.txt", "w") as file:
+    write1(file, len)
+    for i in range(len*2):
+        write1_no_lf(file, str1[i])
+    write1_no_lf(file, '\n')
+
+    for i in range(len*2):
+        write1_no_lf(file, str2[i])
+    write1_no_lf(file, '\n')
+    

@@ -138,121 +138,84 @@ vector<ll> getPrimeNumber(ll limit)
  
 */
 
+ll getPowMod(ll base, ll po, const ll mod)
+{
+	if (po == 0) return 1;
+	if (po % 2 > 0)
+        return (getPowMod(base, po - 1, mod) * base) % mod;
+	ll half = getPowMod(base, po / 2, mod) % mod;
+	return (half * half) % mod;
+}
+
+
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 void solve()
 {
     int N;
     cin >> N;
+    int sqrt = (int)cbrt(N);
 
-    iv order(N+1);
-
-    vector<set<int>> indegree(N+1);
-
-    for(int i = 1 ; i <= N ; i++)
-    {
-        cin >> order[i];
-    }
-
-    for(int i = 1 ; i <= N ; i++)
-    {
-        int cur = order[i];
-        for(int j = i+1 ; j <= N ; j++)
+    auto getSubAns = [&] (int s1, int s2, int remain) -> int {
+        //cout << "s1,s2=" << s1 << "," << s2 << ", remain =" << remain << endl; 
+        if(remain == 0)
+            return 0;
+        int ans = INF_1E97;
+        for(int i = 1; i <= s2 ; i++)
         {
-            int next = order[j];
-            indegree[next].emplace(cur);
-        }
-    }
-
-    int Q;
-    cin >> Q;
-    FOR(i, Q)
-    {
-        int a,b;
-        cin >> a >> b;
-        if(indegree[a].find(b) != indegree[a].end())
-        {
-            indegree[a].erase(b);
-            indegree[b].emplace(a);
-        }
-        else
-        {
-            indegree[a].emplace(b);
-            indegree[b].erase(a);
-        }
-
-    }
-
-    queue<int> que;
-    for(int i = 1 ; i <= N ; i++)
-    {
-        if(indegree[i].size() == 0)
-            que.push(i);
-    }
-    if(que.size() != 1)
-    {
-        cout << "IMPOSSIBLE" << endl;
-        return;
-    }
-
-
-    iv2 teamLoc(N+1);
-
-
-    for(int i = 1; i <= N ; i++)
-    {
-        for(auto &it : indegree[i])
-        {
-            teamLoc[it].push_back(i);
-        }
-    }
-
-    iv ans;
-    while(!que.empty())
-    {
-        auto top = que.front();
-        que.pop();
-        ans.push_back(top);
-
-        for(auto &n : teamLoc[top])
-        {
-            indegree[n].erase(top);
-            if(indegree[n].size() == 0)
+            int x = i;
+            int y = remain / x;
+            if(remain % x > 0)
             {
-                que.push(n);
+                y++;
             }
+            if(max(x,y) > s2 || min(x,y) > s1)
+                continue;
+            if(y == 0)
+                break;
+            ans = min(ans , (x+y) * 2);
         }
-        if(que.size() > 1)
-        {   
-            cout << "IMPOSSIBLE" << endl;
-            return;
-        }
-    }
-    if((int)ans.size() != N)
-    {
-        cout << "IMPOSSIBLE" << endl;
-        return;
-    }
-    for(auto &a : ans)
-    {
-        cout << a << " ";
-    }
-    cout << endl;
-}
+        return ans;
+    };
 
+
+    int ans = 0;
+    int remain = 0;
+    if(N < (sqrt +1) * pow(sqrt , 2))
+    {
+        //cout << "case1" << endl;
+        ans = sqrt * sqrt * 6;
+        remain = N - pow(sqrt , 3);
+
+        ans += getSubAns(sqrt, sqrt, remain);
+    }
+    else if(N < sqrt * pow(sqrt+1, 2))
+    {
+        //cout << "case2" << endl;
+        ans = sqrt * (sqrt +1) * 4 + pow(sqrt, 2) * 2;
+        remain = N - (sqrt +1) * pow(sqrt , 2);
+        ans += getSubAns(sqrt, sqrt+1, remain);
+    }
+    else
+    {
+        //cout << "case3" << endl;
+        ans = sqrt * (sqrt +1) * 4 + pow(sqrt+1, 2) * 2;
+        remain = N - sqrt * pow(sqrt+1, 2);
+        ans += getSubAns(sqrt+1, sqrt+1, remain);
+    }
+    cout << ans << endl;
+}
 
 int main() {
 
-	ios_base::sync_with_stdio(false);
-	cin.tie(NULL);
-	cout.tie(NULL);
-           
-    int T;
-    cin >> T;
-    while(T--)
+    ios_base::sync_with_stdio(false);
+    cin.tie(NULL);
+    cout.tie(NULL);
+
+    int tc;
+    cin >> tc;
+    FOR(i, tc)
     {
         solve();
     }
-    
-    return 0;
 }
