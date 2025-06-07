@@ -1,0 +1,651 @@
+#include <limits.h>
+#include <iostream>
+#include <map>
+#include <vector>
+#include <queue>
+#include <algorithm>
+#include <set>
+#include <functional>
+#include <cmath>
+#include <stack>
+#include <tuple>
+#include <cassert>
+#include <list>
+#include <bitset>
+#include <numeric>
+#include <type_traits>
+#include <iomanip>
+#include <string.h>
+#include <unordered_set>
+ 
+using namespace std;
+ 
+#define endl "\n"
+ 
+typedef long long ll;
+ 
+typedef pair<int,int> ip;
+typedef vector<ip> ipv;
+typedef vector<ipv> ipv2;
+
+typedef vector<int> iv;
+typedef vector<iv> iv2;
+typedef vector<iv2> iv3;
+typedef vector<iv3> iv4;
+
+typedef vector<ll> llv;
+typedef vector<llv> llv2;
+typedef vector<llv2> llv3;
+typedef vector<llv3> llv4;
+
+typedef vector<double> dv;
+typedef vector<dv> dv2;
+
+typedef map<int,int> intmap;
+typedef map<ll, ll> llmap;
+
+#define INF_1E97 ((int)1e9+7)
+#define INF_1E187 ((ll)1e18+7)
+#define INF_1E127 ((ll)1e12+7)
+ 
+#define CHECK_BIT_LL(X, I) ((X) & (1LL<<(I)))
+#define BIT_INV_LL(X, I) (X) ^= (1LL<<(I))
+ 
+#define BIT_SET_LL(X, I) (X) |= (1LL<<I)
+#define BIT_CLEAR_LL(X, I) (X) &= ~(1LL<<I)
+ 
+ 
+#define BOOL_INV(X) (x) ^= true
+#define CHECK_BIT(X, I) ((X) & (1<<(I)))
+#define BIT_INV(X, I) (X) ^= (1<<(I))
+ 
+#define BIT_SET(X, I) (X) |= (1<<(I))
+#define BIT_CLEAR(X, I) (X) &= ~(1<<(I))
+
+#define FOR(X, Y) for(int X = 0 ; X < (Y) ; X++)
+#define FOR2(X, Y, Z) for(int X = (Y); X < (Z) ; X++)
+
+
+template <typename T>
+void printDPTable(string prefix , vector<T> dp)
+{
+    cout << prefix << endl;
+    for(int i = 0 ; i < (int)dp.size() ; i++)
+    {
+        cout << "DP " << i << "] =" << dp[i] << endl;
+    }
+}
+ 
+ 
+template <typename T>
+void printDPTable2D(string prefix , vector<vector<T>> dp , T lim = INF_1E97)
+{
+    cout << prefix << endl;
+    for(int r = 0 ; r < (int)dp.size() ; r++)
+    {
+        for(int c = 0 ; c < (int)dp[r].size() ; c++)
+        {
+            if( dp[r][c] >= lim)
+                cout << "DP " << r << "," << c << "] =" << "INF" << " | ";
+            else
+                cout << "DP " << r << "," << c << "] =" << dp[r][c] << " | ";
+        }
+        cout << endl;
+    }
+}
+ 
+
+
+vector<ll> getPrimeNumber(ll limit)
+{
+	vector<ll> numList(limit + 1, 1);
+	numList[0] = 0;
+	numList[1] = 0;
+ 
+	for (int i = 2; i < limit + 1; i++)
+	{
+		if (numList[i])
+		{
+			for (ll m = 2; i * m < limit + 1; m++)
+			{
+				numList[i * m] = 0;
+			}
+		}
+	}
+	vector<ll> result;
+	FOR(i, (int)numList.size())
+	{
+		if (numList[i]) {
+			result.push_back(i);
+		}
+	}
+	return result;
+}
+ 
+ 
+// 우선 순위를 설정할 수있는 priority queue
+/*
+    auto cmp = [](int_pair& a, int_pair& b) {
+        return a.second > b.second; // 오름차순 정렬
+    };
+ 
+    priority_queue<int_pair, vector<int_pair>, decltype(cmp)> q(cmp);
+*/
+ 
+// 소수점 좌표 지정 출력
+/*
+ 
+    cout << fixed;
+    cout.precision(1);
+    cout << abs(ans) << endl;
+ 
+*/
+
+ll getPowMod(ll base, ll po, const ll mod)
+{
+	if (po == 0) return 1;
+	if (po % 2 > 0)
+        return (getPowMod(base, po - 1, mod) * base) % mod;
+	ll half = getPowMod(base, po / 2, mod) % mod;
+	return (half * half) % mod;
+}
+
+//팬웍트리
+// 펜윅트리를 이용하여 구간쿠리를 수행함. FW Tree 클래스 성질은 아래와 같다.
+// index 0 은 미사용. 1부터~ N 까지 쿼리함.
+// 쿼리시 S, E 둘다 포함됨.
+template <typename T>
+class FanWickTree
+{
+	vector<T> tree_;
+public:
+	FanWickTree(T n) : tree_(n+1) {}
+	T sum(T x) {
+		T ans = 0;
+		for (T i = x; i > 0; i -= i & -i) {
+			ans += tree_[i];
+		}
+		return ans;
+	}
+	void update(T x, T diff) {
+		for (T i = x; i < (T)tree_.size(); i += i & -i) {
+			tree_[i] += diff;
+		}
+	}
+    T query(T s, T e) {
+        return sum(e) - sum(s-1);
+    }
+};
+
+namespace myLazySegment {
+	namespace internal {
+	// @return same with std::bit::bit_ceil
+	unsigned int bit_ceil(unsigned int n) {
+		unsigned int x = 1;
+		while (x < (unsigned int)(n)) x *= 2;
+		return x;
+	}
+	 
+	// @param n `1 <= n`
+	// @return same with std::bit::countr_zero
+	int countr_zero(unsigned int n) {
+		return __builtin_ctz(n);
+	}
+	 
+	// @param n `1 <= n`
+	// @return same with std::bit::countr_zero
+	constexpr int countr_zero_constexpr(unsigned int n) {
+		int x = 0;
+		while (!(n & (1 << x))) x++;
+		return x;
+	}
+	}
+	 
+	template <class S,
+			  S (*op)(S, S),
+			  S (*e)(),
+			  class F,
+			  S (*mapping)(F, S),
+			  F (*composition)(F, F),
+			  F (*id)()>
+	struct lazy_segtree {
+	 
+	  public:
+		lazy_segtree() : lazy_segtree(0) {}
+		explicit lazy_segtree(int n) : lazy_segtree(std::vector<S>(n, e())) {}
+		explicit lazy_segtree(const std::vector<S>& v) : _n(int(v.size())) {
+			size = (int)internal::bit_ceil((unsigned int)(_n));
+			log = internal::countr_zero((unsigned int)size);
+			d = std::vector<S>(2 * size, e());
+			lz = std::vector<F>(size, id());
+			for (int i = 0; i < _n; i++) d[size + i] = v[i];
+			for (int i = size - 1; i >= 1; i--) {
+				update(i);
+			}
+		}
+	 
+		void set(int p, S x) {
+			assert(0 <= p && p < _n);
+			p += size;
+			for (int i = log; i >= 1; i--) push(p >> i);
+			d[p] = x;
+			for (int i = 1; i <= log; i++) update(p >> i);
+		}
+	 
+		S get(int p) {
+			assert(0 <= p && p < _n);
+			p += size;
+			for (int i = log; i >= 1; i--) push(p >> i);
+			return d[p];
+		}
+	 
+		S prod(int l, int r) {
+			assert(0 <= l && l <= r && r <= _n);
+			if (l == r) return e();
+	 
+			l += size;
+			r += size;
+	 
+			for (int i = log; i >= 1; i--) {
+				if (((l >> i) << i) != l) push(l >> i);
+				if (((r >> i) << i) != r) push((r - 1) >> i);
+			}
+	 
+			S sml = e(), smr = e();
+			while (l < r) {
+				if (l & 1) sml = op(sml, d[l++]);
+				if (r & 1) smr = op(d[--r], smr);
+				l >>= 1;
+				r >>= 1;
+			}
+	 
+			return op(sml, smr);
+		}
+	 
+		S all_prod() { return d[1]; }
+	 
+		void apply(int p, F f) {
+			assert(0 <= p && p < _n);
+			p += size;
+			for (int i = log; i >= 1; i--) push(p >> i);
+			d[p] = mapping(f, d[p]);
+			for (int i = 1; i <= log; i++) update(p >> i);
+		}
+		void apply(int l, int r, F f) {
+			assert(0 <= l && l <= r && r <= _n);
+			if (l == r) return;
+	 
+			l += size;
+			r += size;
+	 
+			for (int i = log; i >= 1; i--) {
+				if (((l >> i) << i) != l) push(l >> i);
+				if (((r >> i) << i) != r) push((r - 1) >> i);
+			}
+	 
+			{
+				int l2 = l, r2 = r;
+				while (l < r) {
+					if (l & 1) all_apply(l++, f);
+					if (r & 1) all_apply(--r, f);
+					l >>= 1;
+					r >>= 1;
+				}
+				l = l2;
+				r = r2;
+			}
+	 
+			for (int i = 1; i <= log; i++) {
+				if (((l >> i) << i) != l) update(l >> i);
+				if (((r >> i) << i) != r) update((r - 1) >> i);
+			}
+		}
+	 
+		template <bool (*g)(S)> int max_right(int l) {
+			return max_right(l, [](S x) { return g(x); });
+		}
+		template <class G> int max_right(int l, G g) {
+			assert(0 <= l && l <= _n);
+			assert(g(e()));
+			if (l == _n) return _n;
+			l += size;
+			for (int i = log; i >= 1; i--) push(l >> i);
+			S sm = e();
+			do {
+				while (l % 2 == 0) l >>= 1;
+				if (!g(op(sm, d[l]))) {
+					while (l < size) {
+						push(l);
+						l = (2 * l);
+						if (g(op(sm, d[l]))) {
+							sm = op(sm, d[l]);
+							l++;
+						}
+					}
+					return l - size;
+				}
+				sm = op(sm, d[l]);
+				l++;
+			} while ((l & -l) != l);
+			return _n;
+		}
+	 
+		template <bool (*g)(S)> int min_left(int r) {
+			return min_left(r, [](S x) { return g(x); });
+		}
+		template <class G> int min_left(int r, G g) {
+			assert(0 <= r && r <= _n);
+			assert(g(e()));
+			if (r == 0) return 0;
+			r += size;
+			for (int i = log; i >= 1; i--) push((r - 1) >> i);
+			S sm = e();
+			do {
+				r--;
+				while (r > 1 && (r % 2)) r >>= 1;
+				if (!g(op(d[r], sm))) {
+					while (r < size) {
+						push(r);
+						r = (2 * r + 1);
+						if (g(op(d[r], sm))) {
+							sm = op(d[r], sm);
+							r--;
+						}
+					}
+					return r + 1 - size;
+				}
+				sm = op(d[r], sm);
+			} while ((r & -r) != r);
+			return 0;
+		}
+	 
+	  private:
+		int _n, size, log;
+		std::vector<S> d;
+		std::vector<F> lz;
+	 
+		void update(int k) { d[k] = op(d[2 * k], d[2 * k + 1]); }
+		void all_apply(int k, F f) {
+			d[k] = mapping(f, d[k]);
+			if (k < size) lz[k] = composition(f, lz[k]);
+		}
+		void push(int k) {
+			all_apply(2 * k, lz[k]);
+			all_apply(2 * k + 1, lz[k]);
+			lz[k] = id();
+		}
+	};
+	 
+}
+	 	 
+// using namespace myLazySegment;
+// struct S {
+// 	ll a;
+// 	ll size;
+// };
+	
+// struct F {
+// 	ll a, b;
+// };
+	
+// S op(S l, S r) { return S{l.a + r.a, l.size + r.size}; }
+// S e() { return S{0, 0}; }
+// S mapping(F l, S r) { return S{r.a * l.a + r.size * l.b, r.size}; }
+// F composition(F l, F r) { return F{r.a * l.a, r.b * l.a + l.b}; }
+// F id() { return F{1, 0}; }
+// lazy_segtree<S, op, e, F, mapping, composition, id> seg(arr);
+
+
+
+namespace at_segtree {
+ 
+    namespace internal {
+     
+    int ceil_pow2(int n) {
+        int x = 0;
+        while ((1U << x) < (unsigned int)(n)) x++;
+        return x;
+    }
+     
+    int bsf(unsigned int n) {
+        return __builtin_ctz(n);
+    }
+     
+    }  // namespace internal
+     
+    template <class S, S (*op)(S, S), S (*e)()> struct segtree {
+      public:
+        segtree() : segtree(0) {}
+        segtree(int n) : segtree(std::vector<S>(n, e())) {}
+        segtree(const std::vector<S>& v) : _n(int(v.size())) {
+            log = internal::ceil_pow2(_n);
+            size = 1 << log;
+            d = std::vector<S>(2 * size, e());
+            for (int i = 0; i < _n; i++) d[size + i] = v[i];
+            for (int i = size - 1; i >= 1; i--) {
+                update(i);
+            }
+        }
+     
+        void set(int p, S x) {
+            assert(0 <= p && p < _n);
+            p += size;
+            d[p] = x;
+            for (int i = 1; i <= log; i++) update(p >> i);
+        }
+     
+        S get(int p) {
+            assert(0 <= p && p < _n);
+            return d[p + size];
+        }
+     
+        S prod(int l, int r) {
+            assert(0 <= l && l <= r && r <= _n);
+            S sml = e(), smr = e();
+            l += size;
+            r += size;
+     
+            while (l < r) {
+                if (l & 1) sml = op(sml, d[l++]);
+                if (r & 1) smr = op(d[--r], smr);
+                l >>= 1;
+                r >>= 1;
+            }
+            return op(sml, smr);
+        }
+     
+        S all_prod() { return d[1]; }
+     
+        template <bool (*f)(S)> int max_right(int l) {
+            return max_right(l, [](S x) { return f(x); });
+        }
+        template <class F> int max_right(int l, F f) {
+            assert(0 <= l && l <= _n);
+            assert(f(e()));
+            if (l == _n) return _n;
+            l += size;
+            S sm = e();
+            do {
+                while (l % 2 == 0) l >>= 1;
+                if (!f(op(sm, d[l]))) {
+                    while (l < size) {
+                        l = (2 * l);
+                        if (f(op(sm, d[l]))) {
+                            sm = op(sm, d[l]);
+                            l++;
+                        }
+                    }
+                    return l - size;
+                }
+                sm = op(sm, d[l]);
+                l++;
+            } while ((l & -l) != l);
+            return _n;
+        }
+     
+        template <bool (*f)(S)> int min_left(int r) {
+            return min_left(r, [](S x) { return f(x); });
+        }
+        template <class F> int min_left(int r, F f) {
+            assert(0 <= r && r <= _n);
+            assert(f(e()));
+            if (r == 0) return 0;
+            r += size;
+            S sm = e();
+            do {
+                r--;
+                while (r > 1 && (r % 2)) r >>= 1;
+                if (!f(op(d[r], sm))) {
+                    while (r < size) {
+                        r = (2 * r + 1);
+                        if (f(op(d[r], sm))) {
+                            sm = op(d[r], sm);
+                            r--;
+                        }
+                    }
+                    return r + 1 - size;
+                }
+                sm = op(d[r], sm);
+            } while ((r & -r) != r);
+            return 0;
+        }
+     
+      private:
+        int _n, size, log;
+        std::vector<S> d;
+     
+        void update(int k) { d[k] = op(d[2 * k], d[2 * k + 1]); }
+    };
+     
+}
+
+// Lazy SegTree Example
+
+// using namespace myLazySegment;
+// struct S {
+// 	ll a;
+// 	ll size;
+// };
+	
+// struct F {
+// 	ll a, b;
+// };
+	
+// S op(S l, S r) { return S{l.a + r.a, l.size + r.size}; }
+// S e() { return S{0, 0}; }
+// S mapping(F l, S r) { return S{r.a * l.a + r.size * l.b, r.size}; }
+// F composition(F l, F r) { return F{r.a * l.a, r.b * l.a + l.b}; }
+// F id() { return F{1, 0}; }
+// lazy_segtree<S, op, e, F, mapping, composition, id> seg(arr);
+
+
+
+// using namespace at_segtree;
+// ll op(ll a, ll b) { return max(a, b); } 
+// ll e() { return 0; }
+//
+// iv arr = { 111, 523, 20, 555 ,3 };
+// segtree<int, op, e> seg(arr);
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+
+using namespace at_segtree;
+int op(int a, int b) { return a+b; } 
+int e() { return 0; }
+
+
+
+struct Query{
+	int index;
+	int st;
+	int ed;
+	int K;
+	int ans;
+};
+
+int main() {
+
+	ios_base::sync_with_stdio(false);
+	cin.tie(NULL);
+	cout.tie(NULL);
+	
+	int N;
+	cin >> N;
+
+	iv coord;
+	iv arr(N);
+	FOR(i, N)
+	{
+		cin >> arr[i];
+		coord.push_back(arr[i]);
+	}
+	int Q;
+	cin >> Q;
+	vector<Query> qry(Q);
+
+	FOR(i, Q)
+	{
+		cin >> qry[i].st >> qry[i].ed >> qry[i].K;
+		coord.push_back(qry[i].K);
+		qry[i].index = i;
+		qry[i].st--;
+		qry[i].ed--;
+	}
+
+	sort(coord.begin(), coord.end());
+	coord.erase(unique(coord.begin(),coord.end()), coord.end());
+
+	auto convert = [&] (int org) -> int {
+		int ans = lower_bound(coord.begin(), coord.end(), org) - coord.begin();
+		return ans;
+	};
+
+	int cSize = coord.size();
+
+	iv2 valueTable(cSize);
+
+	FOR(i, N)
+	{
+		arr[i] = convert(arr[i]);
+		valueTable[arr[i]].push_back(i);
+	}
+
+	// K 에 대한 내림차순으로 정렬
+	sort(qry.begin(), qry.end(), [] (Query &a, Query &b) -> bool {
+		return a.K > b.K;
+	});
+
+	iv arr_for_seg(N);
+
+	segtree<int, op, e> seg(arr_for_seg);
+
+
+	int lastUpdate = cSize;
+
+	for(auto &q : qry)
+	{
+		q.K = convert(q.K);
+
+		for(int i = lastUpdate-1 ; i > q.K ; i--)
+		{
+			for(auto &v : valueTable[i])
+			{
+				seg.set(v, 1);
+			}
+		}
+		lastUpdate = q.K + 1;
+		q.ans = seg.prod(q.st, q.ed+1);
+	}
+
+	sort(qry.begin(), qry.end(), [](Query &a, Query &b) -> bool {
+		return a.index < b.index;
+	});
+
+	for(auto &q : qry)
+	{
+		cout << q.ans << endl;
+	}
+
+    return 0;    
+}
