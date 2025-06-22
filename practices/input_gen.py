@@ -157,7 +157,7 @@ with open("input.txt", "w") as file:
     a = random.randint(1, valRange)
     write1(file, a)
     
-"""
+
 
 len = 200
 str1 = []
@@ -185,4 +185,23 @@ with open("input.txt", "w") as file:
     for i in range(len*2):
         write1_no_lf(file, str2[i])
     write1_no_lf(file, '\n')
-    
+
+
+"""
+
+len = 10
+arr1 = []
+arr2 = []
+
+for i in range(len):
+    arr1.append(i+1)
+    arr2.append(i+1)
+
+random.shuffle(arr1) 
+random.shuffle(arr2)
+
+with open("input.txt", "w") as file:
+    write1(file, len)
+    for i in range(len):
+        x = random.randint(1, 10)
+        write3(file, arr1[i], arr2[i], x)

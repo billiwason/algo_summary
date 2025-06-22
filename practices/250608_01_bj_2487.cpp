@@ -377,13 +377,7 @@ namespace myLazySegment {
 	};
 	 
 }
-
-/*
-===========================================
- 🔷🔷🔷 Lazy Segment Tree Example 🔷🔷🔷
-===========================================
-*/
-
+	 	 
 // using namespace myLazySegment;
 // struct S {
 // 	ll a;
@@ -401,7 +395,8 @@ namespace myLazySegment {
 // F id() { return F{1, 0}; }
 // lazy_segtree<S, op, e, F, mapping, composition, id> seg(arr);
 
-	 	 
+
+
 namespace at_segtree {
  
     namespace internal {
@@ -524,6 +519,29 @@ namespace at_segtree {
      
 }
 
+/*
+===========================================
+ 🔷🔷🔷 Lazy Segment Tree Example 🔷🔷🔷
+===========================================
+*/
+
+// using namespace myLazySegment;
+// struct S {
+// 	ll a;
+// 	ll size;
+// };
+	
+// struct F {
+// 	ll a, b;
+// };
+	
+// S op(S l, S r) { return S{l.a + r.a, l.size + r.size}; }
+// S e() { return S{0, 0}; }
+// S mapping(F l, S r) { return S{r.a * l.a + r.size * l.b, r.size}; }
+// F composition(F l, F r) { return F{r.a * l.a, r.b * l.a + l.b}; }
+// F id() { return F{1, 0}; }
+// lazy_segtree<S, op, e, F, mapping, composition, id> seg(arr);
+
 
 /*
 ===========================================
@@ -539,7 +557,7 @@ namespace at_segtree {
 // segtree<int, op, e> seg(arr);
 
 
-
+// union find ( 유니온 파인드 )
 namespace atcoder_dsu {
 
 	struct dsu {
@@ -604,37 +622,38 @@ namespace atcoder_dsu {
 
 /*
 ===========================================
- 🔷🔷🔷 Union Find Example 🔷🔷🔷
+ 🔷🔷🔷 DSU Example 🔷🔷🔷
 ===========================================
 */
 
-// using namespace atcoder_dsu;
+//using namespace atcoder_dsu;
 // dsu UF(N+1);
 
 
-
-// 좌표 압축
- 
 /*
-	// 원 데이터 정렬
-	sort(rawData.begin(), rawData.end());
- 
-	// 중복 제거
-	rawData.erase(unique(rawData.begin(),rawData.end()), rawData.end());
- 
-    // 각 원본 데이터별 2진 탐색으로 압축 좌표 획득. +1 을 하는 이유는 1 base 로 설정하기 위함.
-	FOR(i, nrStation)
-	{
-		auto it = lower_bound(rawData.begin(), rawData.end(), stations[i]);
-		int newCoord = distance(rawData.begin(), it) +1;
- 
-		stations[i] = newCoord;
-	}
+===========================================
+ 🔷🔷🔷 유클리드 호제법 이용 GCD 구하기 🔷🔷🔷
+===========================================
 */
 
+template <typename T>
+T getGCD(T a, T b) {
+    //cout << "GCD = " << a << " " << b << endl;
+    if (b == 0) {
+        return a;
+    } else {
+        return getGCD(b, a % b);
+    }
+}
+
+template <typename T>
+T getLCM(T a, T b)
+{
+	T tmp = (a / getGCD(a,b)) * b;
+	return tmp;
+}
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
 
 int main() {
 
@@ -642,134 +661,61 @@ int main() {
 	cin.tie(NULL);
 	cout.tie(NULL);
 
-	int N; // 블록의 개수
-	int wid; // 결자판 길이
-	int nrX; // x 지점의 개수
+	int N;
+	cin >> N;
 
-	cin >> N >> wid >> nrX;
+	iv arr(N+1), visit(N+1);
 
-	iv blocks(N);
-	FOR(i,N)
+	for(int i = 1; i <= N ; i++)
 	{
-		cin >> blocks[i];
+		cin >> arr[i];
 	}
 
-	int locPrev = 0;
-	iv2 space;
-	FOR(i, nrX)
-	{
-		int loc;
-		cin >> loc;
-		int sz = loc - locPrev - 1;
-		if(sz > 0)
-		{
-			space.push_back(iv(sz));
-		}
-		locPrev = loc;
-	}
-	int sz = wid - locPrev;
-	if(sz > 0)
-	{
-		space.push_back(iv(sz));
-	}
-
-	// for(auto &s : space)
-	// {
-	// 	cout << "space Size =" << s.size() << endl;
-	// }
-
-	iv2 space_L = space;
-	iv2 space_R = space;
-
-	int destIndex = 0;
-	int destOffset = 0;
-	//for(auto &s : blocks)
-	for(int i = 0 ; i < (int)blocks.size() ; i++)
-	{
-		int s = blocks[i];
-		//cout << "s =" << s << ", destidx/ofs =" << destIndex << ", " << destOffset << endl;
-		while(destIndex < (int)space_L.size())
-		{
-			//cout << "destIndex = " << destIndex << endl;
-			if(s <= (int)space_L[destIndex].size() - destOffset)
-			{
-				FOR(k, s)
-				{
-					space_L[destIndex][destOffset+k] = i+1;
-				}
-				if(destOffset+s == (int)space_L[destIndex].size())
-				{
-					destIndex++;
-					destOffset = 0;
-				}
-				else
-				{
-					destOffset += s;
-				}
-				//cout << "destidx/ofs =" << destIndex << ", " << destOffset << endl;
-				break;
-			}
-			else
-			{
-				destIndex++;
-				destOffset = 0;
-			}
-		}
-	}
-
-	destIndex = (int)space_R.size() - 1;
-	destOffset = (int)space_R.back().size() -1; // 채줘져야 할 첫번째인덱스
-	for(int i = (int)blocks.size() -1 ; i >= 0 ; i--)
-	{
+	auto updateGroup = [&] (int idx) -> void {
+		int cur = idx;
 		while(1)
 		{
-			if(blocks[i] <= destOffset+1)
-			{
-				FOR(j, blocks[i])
-				{
-					space_R[destIndex][destOffset-j] = i+1;
-				}
-				if(destOffset+1 == blocks[i])
-				{
-					destIndex--;
-					destOffset = space_R[destIndex].size() -1;
-				}
-				else
-				{
-					destOffset -= blocks[i];
-				}
+			visit[cur] = idx;
+			cur = arr[cur];
+
+			if(cur == idx)
 				break;
-			}
-			else
-			{
-				destIndex--;
-				destOffset = space_R[destIndex].size() -1;
-			}
 		}
-	}
+	};
 
-	int ans = 0;
-
-	FOR(i, (int)space.size())
+	while(1)
 	{
-		FOR(j, (int)space[i].size())
+		bool updated = false;
+		for(int i = 1; i <= N ; i++)
 		{
-			if(space_L[i][j] > 0 && space_R[i][j] > 0 && space_L[i][j] == space_R[i][j]) 
-				ans++;
+			if(visit[i] == 0)
+			{
+				updated = true;
+				updateGroup(i);
+			}
+		}
+		if(updated == false)
+		{
+			break;
 		}
 	}
-	cout << ans << endl;
 
+	intmap gr;
 
-	// cout << "#######" << endl;
-	// FOR(i, (int)space.size())
-	// {
-	// 	FOR(j, (int)space[i].size())
-	// 	{
-	// 		cout << space_L[i][j] << " ";
-	// 	}
-	// 	cout << endl;
-	// }
+	for(int i = 1 ; i <= N ; i++)
+	{
+		gr[visit[i]]++;
+	}
+
+	int ans = 1;
+	for(auto &g : gr)
+	{
+		ans = getLCM(ans, g.second);
+	}
+	if(ans == 1)
+		cout << 0 << endl;
+	else
+		cout << ans << endl;
 
     return 0;    
 }

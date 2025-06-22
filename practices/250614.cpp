@@ -642,134 +642,58 @@ int main() {
 	cin.tie(NULL);
 	cout.tie(NULL);
 
-	int N; // 블록의 개수
-	int wid; // 결자판 길이
-	int nrX; // x 지점의 개수
+    int N , R; // 마을의 개수 , 강의 개수
 
-	cin >> N >> wid >> nrX;
+    cin >> N >> R;
 
-	iv blocks(N);
-	FOR(i,N)
-	{
-		cin >> blocks[i];
-	}
+    ipv river(2);
 
-	int locPrev = 0;
-	iv2 space;
-	FOR(i, nrX)
-	{
-		int loc;
-		cin >> loc;
-		int sz = loc - locPrev - 1;
-		if(sz > 0)
-		{
-			space.push_back(iv(sz));
-		}
-		locPrev = loc;
-	}
-	int sz = wid - locPrev;
-	if(sz > 0)
-	{
-		space.push_back(iv(sz));
-	}
+    FOR(i, R)
+    {
+        cin >> river[i].first >> river[i].second;
+    }
+    ll ans = (ll)(3 + N+1) * ( N+1 - 3 +1) / 2;
+    
 
-	// for(auto &s : space)
-	// {
-	// 	cout << "space Size =" << s.size() << endl;
-	// }
+    auto addition = [&] (ip f, ip s) -> int {
+        if(f.first == 1)
+        {
+            for(int i = 2 ; i <= N ; i++)
+            {
+                if(i != f.second)
+                {
+                    ip test = make_pair(i, f.second);
+                    if(test.first > test.second)
+                        swap(test.first , test.second);
 
-	iv2 space_L = space;
-	iv2 space_R = space;
+                    if(test != s)
+                    {
+                        return test.first + test.second - (f.second + 1);
+                    }
+                }
+            }
+        }
+        else
+        {
+            return 0;
+        }
+        return 0;
+    };
 
-	int destIndex = 0;
-	int destOffset = 0;
-	//for(auto &s : blocks)
-	for(int i = 0 ; i < (int)blocks.size() ; i++)
-	{
-		int s = blocks[i];
-		//cout << "s =" << s << ", destidx/ofs =" << destIndex << ", " << destOffset << endl;
-		while(destIndex < (int)space_L.size())
-		{
-			//cout << "destIndex = " << destIndex << endl;
-			if(s <= (int)space_L[destIndex].size() - destOffset)
-			{
-				FOR(k, s)
-				{
-					space_L[destIndex][destOffset+k] = i+1;
-				}
-				if(destOffset+s == (int)space_L[destIndex].size())
-				{
-					destIndex++;
-					destOffset = 0;
-				}
-				else
-				{
-					destOffset += s;
-				}
-				//cout << "destidx/ofs =" << destIndex << ", " << destOffset << endl;
-				break;
-			}
-			else
-			{
-				destIndex++;
-				destOffset = 0;
-			}
-		}
-	}
+    if((river[0].first == 1 && river[0].second == 2 && 
+        river[1].first == 1 && river[1].second == 3)  || 
+        (river[1].first == 1 && river[1].second == 2 && 
+        river[0].first == 1 && river[0].second == 3) )
+    {
+        ans += 4;
+    }
+    else
+    {
+        ans += addition(river[0], river[1]);
+        ans += addition(river[1], river[0]);
+    }
+    cout << ans << endl;
 
-	destIndex = (int)space_R.size() - 1;
-	destOffset = (int)space_R.back().size() -1; // 채줘져야 할 첫번째인덱스
-	for(int i = (int)blocks.size() -1 ; i >= 0 ; i--)
-	{
-		while(1)
-		{
-			if(blocks[i] <= destOffset+1)
-			{
-				FOR(j, blocks[i])
-				{
-					space_R[destIndex][destOffset-j] = i+1;
-				}
-				if(destOffset+1 == blocks[i])
-				{
-					destIndex--;
-					destOffset = space_R[destIndex].size() -1;
-				}
-				else
-				{
-					destOffset -= blocks[i];
-				}
-				break;
-			}
-			else
-			{
-				destIndex--;
-				destOffset = space_R[destIndex].size() -1;
-			}
-		}
-	}
-
-	int ans = 0;
-
-	FOR(i, (int)space.size())
-	{
-		FOR(j, (int)space[i].size())
-		{
-			if(space_L[i][j] > 0 && space_R[i][j] > 0 && space_L[i][j] == space_R[i][j]) 
-				ans++;
-		}
-	}
-	cout << ans << endl;
-
-
-	// cout << "#######" << endl;
-	// FOR(i, (int)space.size())
-	// {
-	// 	FOR(j, (int)space[i].size())
-	// 	{
-	// 		cout << space_L[i][j] << " ";
-	// 	}
-	// 	cout << endl;
-	// }
 
     return 0;    
 }
